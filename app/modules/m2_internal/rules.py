@@ -3,6 +3,7 @@ from app.report import report,quarantine
 from app.errors import BusinessError
 from decimal import Decimal
 UNITS={"ug/L":Decimal(1),"mg/L":Decimal(1000),"ng/L":Decimal("0.001")}
+KINDS={"standard","blank","equipment_blank","transport_blank","field_blank","sample","control"}
 def response(area,internal):
     a,b=number(area),number(internal)
     if a<0 or b<=0: raise BusinessError("INTERNAL","内标须大于零")
@@ -17,7 +18,7 @@ def apply(ctx):
             x["level_value"]=number(r["level"])*UNITS[r["unit"]]
             x["dilution_value"]=number(r["dilution"])
             if x["dilution_value"]<=0: raise BusinessError("DILUTION","稀释倍数须大于零")
-            if r["kind"] not in {"standard","blank","sample","control"}: raise BusinessError("KIND","样品类型无效")
+            if r["kind"] not in KINDS: raise BusinessError("KIND","样品类型无效")
             out.append(x)
         except BusinessError as e: quarantine(ctx,r,e.code)
     ctx["normalized"]=out

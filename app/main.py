@@ -36,7 +36,15 @@ def calculate(payload:object=Body(default=None)):
 @app.get("/api/runs")
 def list_runs(): return store.history()
 @app.get("/api/runs/{ident}")
-def run_detail(ident:str): return store.get(ident)
+def run_detail(ident:str,view:str=""):
+    if view=="original": return store.original(ident)
+    return store.get(ident)
+@app.post("/api/runs/{ident}/blank-basis")
+def switch_basis(ident:str,payload:object=Body(...)):
+    payload=object_payload(payload)
+    if not isinstance(payload.get("basis"),str): raise BusinessError("BASIS","空白依据须为文本")
+    if type(payload.get("revision")) is not int: raise BusinessError("REVISION","版本须为整数")
+    return store.switch_basis(ident,payload["revision"],payload["basis"])
 @app.post("/api/review")
 def review(payload:object=Body(...)):
     payload=object_payload(payload)
@@ -47,4 +55,4 @@ def review(payload:object=Body(...)):
 def export(ident:str):
     return Response(evidence_csv(store.get(ident)),media_type="text/csv",headers={"Content-Disposition":"attachment; filename=evidence.csv"})
 @app.get("/api/sample")
-def sample(): return {"text":sample_text()}
+def sample(name:str="instrument"): return {"text":sample_text(name)}

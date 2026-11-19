@@ -14,7 +14,9 @@ docker compose exec -T app pytest -q
 docker compose config --quiet
 ```
 
-浏览器访问 http://localhost:18210 。默认载入仓内样例。工具条可选择CSV文件运行；样例文件位于 `sample_data/instrument.csv`。重复执行同一内容复用同一批次。
+浏览器访问 http://localhost:18210 。默认载入仓内样例。工具条可选择CSV文件运行；样例文件位于 `sample_data/instrument.csv`，外送分型空白样例位于 `sample_data/outsourced.csv`。重复执行同一内容复用同一批次。
+
+复核页按样品给出实验室浓度、检出状态与现场采样链能否签发，并保留对应空白与每次进样依据。空白依据（设备/运输/现场/混合）可在复核页切换；切换失败保留原签发结论，原始进样与原始结论永不覆盖。
 
 ## 模块
 

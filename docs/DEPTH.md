@@ -27,6 +27,8 @@
 | TRAP-14 | 业务键冲突 | 静默采信错误值 | 保留首条并隔离冲突 | `app/modules/m1_intake/rules.py` | `tests/test_intake.py::test_intake_conflicting_key` |
 | TRAP-15 | 单位混合 | 静默采信错误值 | 浓度单位归一 | `app/modules/m2_internal/rules.py` | `tests/test_internal.py::test_internal_units` |
 | TRAP-19 | 多个质控标记 | 静默采信错误值 | 显式优先级 | `app/modules/m6_quality/rules.py` | `tests/test_quality.py::test_quality_priority` |
+| TRAP-23 | 空白来源混合 | 污染无法溯源，全链停工 | 空白分型扣除+分源签发 | `app/modules/m4_blank/rules.py` | `tests/test_blank_basis.py::test_lab_concentration_deducts_equipment_only` |
+| TRAP-24 | 依据切换半途失败 | 签发结论被污染 | 覆盖校验先于落库，追加层可恢复 | `app/store.py` | `tests/test_blank_basis.py::test_switch_failure_restores_original` |
 
 ## 对账规则
 
